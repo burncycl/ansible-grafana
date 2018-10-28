@@ -1,0 +1,82 @@
+---
+
+- name: Install docker.io
+  apt: 
+    name: docker.io 
+    state: present
+  tags: 
+   - docker_grafana
+   - install 
+
+- name: Install Python2/pip2 dependencies
+  pip:
+    name: '{{ packages }}'
+    state: latest
+    executable: pip2
+  vars:
+   packages:
+    - docker-py 
+  tags: 
+   - docker_grafana
+   - install 
+
+- name: Enable and start docker service 
+  systemd:
+    name: docker 
+    enabled: yes
+    state: started 
+  tags: 
+   - docker_grafana
+   - install 
+
+- name: Create grafana storage directory
+  file:
+   path: '{{ grafana_storage }}'
+   owner: root 
+   group: root
+   mode: 0777 
+   state: directory
+  tags: 
+   - docker_grafana
+   - install 
+
+- name: Create grafana provisioning datasources directory
+  file:
+   path: '{{ grafana_provisioning_datasources }}'
+   owner: root
+   group: root
+   mode: 0775
+   state: directory
+  tags:
+   - docker_grafana
+   - install
+
+- name: Create grafana provisioning dashboards directory
+  file:
+   path: '{{ grafana_provisioning_dashboards }}'
+   owner: root
+   group: root
+   mode: 0775
+   state: directory
+  tags:
+   - docker_grafana
+   - install
+
+- name: Run grafana docker
+  docker_container:
+    name: grafana
+    image: grafana/grafana
+    privileged: yes
+    restart_policy: always
+    network_mode: host
+    state: started
+    ports:
+      - '{{ grafana_docker_exposed_ports }}'
+    volumes:
+      - '{{ grafana_storage }}:{{ grafana_storage }}'
+      - '{{ grafana_provisioning }}:{{ grafana_docker_provisioning }}'
+    env:
+      GF_SECURITY_ADMIN_PASSWORD: '{{ grafana_password }}'
+  tags: 
+   - docker_grafana
+   - install 

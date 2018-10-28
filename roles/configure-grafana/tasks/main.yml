@@ -1,0 +1,32 @@
+---
+
+- name: Create influxdb.yaml datasource from template
+  template:
+    src: 'templates/{{ grafana_provisioning_influxdb_datasource_template }}'
+    dest: '{{ grafana_provisioning_influxdb_datasource }}' 
+    owner: root 
+    group: root 
+    mode: 0775
+  tags:
+   - configure
+   - configure_datasource
+   - influxdb 
+
+
+# DEPRECATED # This lacked proper methods. Using Grafana provisioning feature instead.
+#- name: Create influxdb datasource
+#  grafana_datasource:
+#    name: "{{ grafana_datasource_name }}" 
+#    grafana_url: "{{ grafana_url }}" 
+#    grafana_user: "{{ grafana_user }}" 
+#    grafana_password: "{{ grafana_password }}" 
+#    ds_type: "{{ grafana_ds_type }}"
+#    url: "{{ influxdb_url }}" 
+#    database: "{{ influxdb_database_name }}"
+#    user: "{{ influxdb_username }}"
+#    password: "{{ influxdb_password }}"
+#    tls_ca_cert: "{{ influxdb_tls_ca_cert }}" 
+#  tags:
+#   - configure
+#   - configure_datasource
+#   - influxdb 

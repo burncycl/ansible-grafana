@@ -1,0 +1,26 @@
+---
+
+# Grafana Variables
+grafana_storage: /var/lib/grafana
+grafana_provisioning: "{{ grafana_storage }}/provisioning"
+grafana_docker_provisioning: /etc/grafana/provisioning
+grafana_provisioning_datasources: "{{ grafana_provisioning }}/datasources"
+grafana_provisioning_dashboards: "{{ grafana_provisioning }}/dashboards"
+grafana_docker_exposed_ports: "3000:3000"
+
+# Provisioning datasourcs.yml
+grafana_provisioning_influxdb_datasource_template: influxdb.yaml.j2
+grafana_provisioning_influxdb_datasource: "{{ grafana_provisioning_datasources }}/influxdb.yaml"
+
+# Grafana InfluxDB datasource
+grafana_datasource_name: statsmon
+grafana_url: http://10.9.9.219:3000 # Technically deprecated. But would be updated in ./roles/install-grafana/tasks/main.yml 
+grafana_user: admin
+# grafana_password is held in secrets.yml
+grafana_org_id: 1
+grafana_ds_type: influxdb
+influxdb_url: https://10.9.9.219:8086 # Modify this and cp ./roles/configure-grafana/templates/influxdb.yaml.j2_using_group_vars_all ./roles/configure-grafana/templates/influxdb.yaml.j2 if using ip address different than target host. 
+influxdb_database_name: statsmon
+influxdb_username: influx
+# influxdb_password held in secrets.yml
+# influxdb_tls_ca_cert held in secrets.yml

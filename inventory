@@ -1,0 +1,2 @@
+[grafana-nodes]
+titan ansible_host=10.9.9.219 ansible_port=22
