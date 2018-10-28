@@ -1,5 +1,6 @@
 ## 2018/10 BuRnCycL
 
+Ansible Playbook to Deploy Grafana in a Docker Container, and use Grafana Provisoning system to import InfluxDB Datasource. InfluxDB is configured to use self-signed certificates.
 
 ## Prerequisites 
 Make sure the remote computer has the proper ansible ssh key in /root/.ssh/authorized_keys
@@ -28,7 +29,7 @@ ansible-vault encrypt secrets.yml
 
 ## Modify inventory
 
-Point this at the host you wish to deploy InfluxDB
+Point this at the host you wish to deploy Grafana
 ```
 vi ./inventory
 ```
